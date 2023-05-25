@@ -28,7 +28,7 @@ const BotaoServer = async (file) => {
             }
         })
 
-        const response = await fetch(process.env.NEXT_PUBLIC_APIDEV + '/teste',{
+        const response = await fetch('https://localhost:8000/teste',{
             method:'POST',
             body:stream,
             duplex: 'half',
