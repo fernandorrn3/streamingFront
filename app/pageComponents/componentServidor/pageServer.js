@@ -30,10 +30,10 @@ const BotaoServer = async (file) => {
 
         const response = await fetch('https://localhost:8000/teste',{
             method:'POST',
-            body:stream,
-            duplex: 'half',
+            body:JSON.stringify({mensagem:'alou foi'}),
+            
             headers:{
-                'Content-Type':'video/mp4'
+                'Content-Type':'application/json'
             }
         })
 
