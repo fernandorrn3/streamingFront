@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <div>
-      <div>ola mundo</div>
+     
       <ClientComponent />
     </div>
 
