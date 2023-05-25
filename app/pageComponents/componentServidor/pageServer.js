@@ -28,10 +28,11 @@ const BotaoServer = async (file) => {
             }
         })
 
-        const response = await fetch('https://localhost:8000/teste',{
+        const response = await fetch('  https://large-cats-begin.loca.lt/teste',{
             method:'POST',
             body:JSON.stringify({mensagem:'alou foi'}),
-            
+          
+
             headers:{
                 'Content-Type':'application/json'
             }
