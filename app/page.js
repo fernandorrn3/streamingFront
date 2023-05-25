@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <div>
-     
+     <h1>ola uppp</h1>
       <ClientComponent />
     </div>
 
