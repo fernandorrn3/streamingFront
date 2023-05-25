@@ -1,44 +1,47 @@
-const BotaoServer = async () => {
-  function wait(milliseconds) {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-  }
-  
-  const stream = new ReadableStream({
-    async start(controller) {
-      await wait(1000);
-      controller.enqueue('This ');
-      await wait(1000);
-      controller.enqueue('is ');
-      await wait(1000);
-      controller.enqueue('a ');
-      await wait(1000);
-      controller.enqueue('slow ');
-      await wait(1000);
-      controller.enqueue('request.');
-      controller.close();
-    },
-  }).pipeThrough(new TextEncoderStream());
-  
-  const res = await fetch('https://localhost:8000/teste/', {
-    method: 'POST',
-    headers: {'Content-Type': 'text/plain'},
-    body: stream,
-    duplex: 'half',
-  });
-  
-const response = await res.json()
+const BotaoServer = async (file) => {
+    const chunkSize = 1204 * 1204
+    function chunkSlice(file, chunkSize) {
+        const fileSize = file.size
+        const chunks = Math.ceil(fileSize / chunkSize);
+    
+        const fileChunks = [];
 
-return response
-/*const res = await fetch('http://localhost:8000/teste/',{
-  method:"POST",
-  headers:{
-    'Content-Type':'application/json',
-    'Content-Length': 332
-  },
-  body:JSON.stringify({mensagem:'ola valeu'})
-})
-const response = await res.json()
-console.log(response)*/
+        for (let i = 0; i < chunks; i++) {
+            const start = i * chunkSize;
+         
+            const end = Math.min(start + chunkSize, fileSize);
+          
+            const chunk = file.slice(start, end);
+            fileChunks.push(chunk);
+        }
+
+        return fileChunks;
+    }
+    const pedacoVideos = chunkSlice(file, chunkSize)
+
+    async function postLArge(pedadoVideos) {
+
+        const stream = new ReadableStream({
+            start(controller) {
+                pedacoVideos.forEach(chunk => controller.enqueue(chunk))
+                controller.close()
+            }
+        })
+
+        const response = await fetch(process.env.NEXT_PUBLIC_APIDEV + '/teste',{
+            method:'POST',
+            body:stream,
+            duplex: 'half',
+            headers:{
+                'Content-Type':'video/mp4'
+            }
+        })
+
+        const res = await response.json()
+        return res
+    }
+
+   console.log(await postLArge(pedacoVideos))
 }
 
 export default BotaoServer
