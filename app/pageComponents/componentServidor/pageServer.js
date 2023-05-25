@@ -28,7 +28,7 @@ const BotaoServer = async (file) => {
             }
         })
 
-        const response = await fetch('  https://large-cats-begin.loca.lt/teste',{
+        const response = await fetch('https://large-cats-begin.loca.lt/teste',{
             method:'POST',
             body:JSON.stringify({mensagem:'alou foi'}),
           
